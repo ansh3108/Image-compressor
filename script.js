@@ -1,53 +1,53 @@
-const uploadContainer = document.querySelector(".upload-box"),
-      previewImage = uploadContainer.querySelector("img"),
-      fileChooser = uploadContainer.querySelector("input"),
-      inputWidth = document.querySelector(".width input"),
-      inputHeight = document.querySelector(".height input"),
-      lockRatio = document.querySelector(".ratio input"),
-      reduceQuality = document.querySelector(".quality input"),
-      downloadButton = document.querySelector(".download-btn");
+const uploadBox = document.querySelector(".upload-box"),
+previewImg = uploadBox.querySelector("img"),
+fileInput = uploadBox.querySelector("input"),
+widthInput = document.querySelector(".width input"),
+heightInput = document.querySelector(".height input"),
+ratioInput = document.querySelector(".ratio input"),
+qualityInput = document.querySelector(".quality input"),
+downloadBtn = document.querySelector(".download-btn");
 
-let originalImageRatio;
+let ogImageRatio;
 
-const handleFileLoad = (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
-    previewImage.src = URL.createObjectURL(file);
-    previewImage.addEventListener("load", () => {
-        inputWidth.value = previewImage.naturalWidth;
-        inputHeight.value = previewImage.naturalHeight;
-        originalImageRatio = previewImage.naturalWidth / previewImage.naturalHeight;
-        document.querySelector(".container").classList.add("active");
+const loadFile = (e) => {
+    const file = e.target.files[0];
+    if(!file) return;
+    previewImg.src = URL.createObjectURL(file);
+    previewImg.addEventListener("load", () => {
+        widthInput.value = previewImg.naturalWidth;
+        heightInput.value = previewImg.naturalHeight;
+        ogImageRatio = previewImg.naturalWidth / previewImg.naturalHeight;
+        document.querySelector(".wrapper").classList.add("active");
     });
 }
 
-inputWidth.addEventListener("keyup", () => {
-    const height = lockRatio.checked ? inputWidth.value / originalImageRatio : inputHeight.value;
-    inputHeight.value = Math.floor(height);
+widthInput.addEventListener("keyup", () => {
+    const height = ratioInput.checked ? widthInput.value / ogImageRatio : heightInput.value;
+    heightInput.value = Math.floor(height);
 });
 
-inputHeight.addEventListener("keyup", () => {
-    const width = lockRatio.checked ? inputHeight.value * originalImageRatio : inputWidth.value;
-    inputWidth.value = Math.floor(width);
+heightInput.addEventListener("keyup", () => {
+    const width = ratioInput.checked ? heightInput.value * ogImageRatio : widthInput.value;
+    widthInput.value = Math.floor(width);
 });
 
-const processImageAndDownload = () => {
+const resizeAndDownload = () => {
     const canvas = document.createElement("canvas");
-    const link = document.createElement("a");
-    const context = canvas.getContext("2d");
+    const a = document.createElement("a");
+    const ctx = canvas.getContext("2d");
 
-    const imageQuality = reduceQuality.checked ? 0.5 : 1.0;
+    const imgQuality = qualityInput.checked ? 0.5 : 1.0;
 
-    canvas.width = inputWidth.value;
-    canvas.height = inputHeight.value;
+    canvas.width = widthInput.value;
+    canvas.height = heightInput.value;
 
-    context.drawImage(previewImage, 0, 0, canvas.width, canvas.height);
-
-    link.href = canvas.toDataURL("image/jpeg", imageQuality);
-    link.download = new Date().getTime();
-    link.click();
+    ctx.drawImage(previewImg, 0, 0, canvas.width, canvas.height);
+    
+    a.href = canvas.toDataURL("image/jpeg", imgQuality);
+    a.download = new Date().getTime();
+    a.click();
 }
 
-downloadButton.addEventListener("click", processImageAndDownload);
-fileChooser.addEventListener("change", handleFileLoad);
-uploadContainer.addEventListener("click", () => fileChooser.click());
+downloadBtn.addEventListener("click", resizeAndDownload);
+fileInput.addEventListener("change", loadFile);
+uploadBox.addEventListener("click", () => fileInput.click());
