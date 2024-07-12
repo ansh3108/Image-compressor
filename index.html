@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Resizer</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container">
+        <div class="file-upload">
+            <input type="file" accept="image/*" hidden>
+            <img src="upload-icon.svg" alt="Upload Icon">
+            <p>Select an Image</p>
+        </div>
+        <div class="controls">
+            <div class="dimensions">
+                <div class="input-group width-input">
+                    <label>Width</label>
+                    <input type="number">
+                </div>
+                <div class="input-group height-input">
+                    <label>Height</label>
+                    <input type="number">
+                </div>
+            </div>
+            <div class="options">
+                <div class="option-group aspect-ratio">
+                    <input type="checkbox" id="aspect-ratio" checked>
+                    <label for="aspect-ratio">Keep Aspect Ratio</label>
+                </div>
+                <div class="option-group quality-reduction">
+                    <input type="checkbox" id="quality-reduction">
+                    <label for="quality-reduction">Reduce Quality</label>
+                </div>
+            </div>
+            <button class="download">Download Image</button>
+        </div>
+    </div>
+</body>
+</html>
